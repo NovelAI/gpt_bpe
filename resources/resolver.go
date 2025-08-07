@@ -908,6 +908,7 @@ type SpecialConfig struct {
 	EndOfWord     string             `json:"end_of_word"`
 	DecodeExtra   *map[string]string `json:"decode_extra"`
 	SplitRegex    *string            `json:"split_regex"`
+	SpaceMerge    bool               `json:"space_merge"`
 }
 
 // NewHFConfig creates a new HFConfig object with default values.

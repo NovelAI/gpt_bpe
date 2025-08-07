@@ -64,6 +64,7 @@ type GPTEncoder struct {
 	encloseEos            bool
 	prefixSpace           bool
 	lowerCase             bool
+	spaceMerge            bool
 	endOfWord             string
 	replacements          map[string]string
 	runeBufSz             int
@@ -123,6 +124,7 @@ const VOCAB_ID_NERDSTASH_V2 = "nerdstash_v2-tokenizer"
 const VOCAB_ID_LLAMA = "llama-tokenizer"
 const VOCAB_ID_LLAMA_3 = "llama3-tokenizer"
 const VOCAB_ID_MISTRAL = "mistral-tokenizer"
+const VOCAB_ID_GLM45 = "glm45-tokenizer"
 
 func NewGPT2Encoder() GPTEncoder {
 	encoder, _ := NewEncoder(VOCAB_ID_GPT2)
@@ -161,6 +163,11 @@ func NewLlama3Encoder() GPTEncoder {
 
 func NewMistralEncoder() GPTEncoder {
 	encoder, _ := NewEncoder(VOCAB_ID_MISTRAL)
+	return *encoder
+}
+
+func NewGLM45Encoder() GPTEncoder {
+	encoder, _ := NewEncoder(VOCAB_ID_GLM45)
 	return *encoder
 }
 
@@ -252,6 +259,7 @@ func NewEncoder(vocabId string) (*GPTEncoder, error) {
 		EndOfWord:     "",
 		DecodeExtra:   nil,
 		SplitRegex:    nil,
+		SpaceMerge:    false,
 	}
 	if special, ok := (rsrcs)["special_config.json"]; ok {
 		if special.Data != nil {
@@ -457,11 +465,11 @@ func NewEncoder(vocabId string) (*GPTEncoder, error) {
 		}
 		// Inject the pad token into the encoder to uintmax32,
 		// throw an error if vocab is larger than uintmax32
-		if len(encoderTokens) >= math.MaxUint32 {
+		if uint64(len(encoderTokens)) >= uint64(math.MaxUint32) {
 			log.Fatalf(
 				"Vocab size of %d is larger than uint32 max of %d. "+
 					"Please specify a pad token in the vocab file.",
-				len(encoderTokens), math.MaxUint32,
+				len(encoderTokens), uint64(math.MaxUint32),
 			)
 		}
 		if padTokenNotFound {
@@ -504,6 +512,7 @@ func NewEncoder(vocabId string) (*GPTEncoder, error) {
 		prefixSpace:           specialConfig.PrefixSpace,
 		lowerCase:             specialConfig.LowerCase,
 		endOfWord:             specialConfig.EndOfWord,
+		spaceMerge:            specialConfig.SpaceMerge,
 		replacements:          replacements,
 		runeBufSz:             RUNEBUF_SZ,
 		wordChanSz:            WORDCHAN_SZ,
@@ -1106,6 +1115,7 @@ func (encoder *GPTEncoder) makeWordSplitter(
 				if encoder.lowerCase {
 					word = strings.ToLower(word)
 				}
+
 				if !encoder.prefixSpace {
 					word = strings.TrimSpace(word)
 				}
