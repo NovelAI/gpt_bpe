@@ -1,4 +1,4 @@
-module github.com/wbrown/gpt_bpe
+module github.com/finetunej/gpt_bpe
 
 go 1.19
 
