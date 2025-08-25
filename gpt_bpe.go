@@ -19,8 +19,8 @@ import (
 	"github.com/pkg/errors"
 
 	lru "github.com/hashicorp/golang-lru"
-	"github.com/wbrown/gpt_bpe/resources"
-	"github.com/wbrown/gpt_bpe/types"
+	"github.com/novelai/gpt_bpe/resources"
+	"github.com/novelai/gpt_bpe/types"
 )
 
 const BPE_LRU_SZ = 16384

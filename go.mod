@@ -1,4 +1,4 @@
-module github.com/finetunej/gpt_bpe
+module github.com/novelai/gpt_bpe
 
 go 1.19
 
@@ -14,16 +14,17 @@ require (
 	github.com/jdkato/prose/v2 v2.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/ulikunitz/xz v0.5.12
+	github.com/wbrown/gpt_bpe v0.0.0-20250709161131-1571a6e8ad2d
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mingrammer/commonregex v1.0.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
