@@ -10,7 +10,6 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"log"
-	"math"
 	"net/url"
 	"os"
 	"path"
@@ -1025,15 +1024,6 @@ func (rsrcs *Resources) ResolveHF(hfConfig *HFConfig) (err error) {
 		}
 	} else {
 		return errors.New("could not resolve HFConfig")
-	}
-
-	// Llama 3 and other larger models will enclose eos and bos by default
-	if *hfConfig.VocabSize > math.MaxUint16+1 {
-		var addEosToken = true
-		var addBosToken = true
-
-		hfConfig.AddEosToken = &addEosToken
-		hfConfig.AddBosToken = &addBosToken
 	}
 
 	return nil
