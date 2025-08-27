@@ -47,11 +47,11 @@ import (
 //go:embed data/mistral-tokenizer/tokenizer.json
 //go:embed data/mistral-tokenizer/special_tokens_map.json
 //go:embed data/mistral-tokenizer/encoder.json
-//go:embed data/glm45-tokenizer/encoder.json
 //go:embed data/glm45-tokenizer/vocab.bpe
 //go:embed data/glm45-tokenizer/unitrim.json
 //go:embed data/glm45-tokenizer/specials.txt
 //go:embed data/glm45-tokenizer/special_config.json
+//go:embed data/glm45-tokenizer/tokenizer.json
 var f embed.FS
 
 // GetEmbeddedResource
