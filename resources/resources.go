@@ -53,6 +53,7 @@ import (
 //go:embed data/glm45-tokenizer/specials.txt
 //go:embed data/glm45-tokenizer/special_config.json
 //go:embed data/glm45-tokenizer/tokenizer.json
+//go:embed data/glm45-tokenizer/tokenizer_config.json
 var f embed.FS
 
 // GetEmbeddedResource
