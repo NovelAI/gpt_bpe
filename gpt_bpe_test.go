@@ -16,11 +16,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/novelai/gpt_bpe/types"
+	"github.com/wbrown/gpt_bpe/types"
 
-	"github.com/novelai/gpt_bpe/resources"
 	"github.com/stretchr/testify/assert"
 	"github.com/ulikunitz/xz"
+	"github.com/wbrown/gpt_bpe/resources"
 )
 
 var clipEncoder GPTEncoder
