@@ -79,6 +79,7 @@ type GPTEncoder struct {
 	normalizerStringMap   map[string]string
 	regexWordSplitterTree *RegexNode
 	wordSplitterMap       [][]int
+	shiftWhitespace       bool
 }
 
 type GPTPair struct {
@@ -217,6 +218,7 @@ func (encoder *GPTEncoder) Clone() *GPTEncoder {
 	clone.runeBufSz = encoder.runeBufSz
 	clone.regexWordSplitterTree = encoder.regexWordSplitterTree
 	clone.wordSplitterMap = encoder.wordSplitterMap
+	clone.shiftWhitespace = encoder.shiftWhitespace
 	return &clone
 }
 
@@ -251,15 +253,16 @@ func NewEncoder(vocabId string) (*GPTEncoder, error) {
 	}
 
 	specialConfig := resources.SpecialConfig{
-		PuncRunes:     nil,
-		Normalizer:    nil,
-		EncloseEosBos: false,
-		PrefixSpace:   true,
-		LowerCase:     false,
-		EndOfWord:     "",
-		DecodeExtra:   nil,
-		SplitRegex:    nil,
-		SpaceMerge:    false,
+		PuncRunes:       nil,
+		Normalizer:      nil,
+		EncloseEosBos:   false,
+		PrefixSpace:     true,
+		LowerCase:       false,
+		EndOfWord:       "",
+		DecodeExtra:     nil,
+		SplitRegex:      nil,
+		SpaceMerge:      false,
+		ShiftWhitespace: false,
 	}
 	if special, ok := (rsrcs)["special_config.json"]; ok {
 		if special.Data != nil {
@@ -526,6 +529,7 @@ func NewEncoder(vocabId string) (*GPTEncoder, error) {
 		normalizerStringMap:   normsMap,
 		regexWordSplitterTree: nil,
 		wordSplitterMap:       nil,
+		shiftWhitespace:       specialConfig.ShiftWhitespace,
 	}
 	encoder.UpdateSpecialsTree()
 	return encoder, nil
@@ -1157,6 +1161,22 @@ func (encoder *GPTEncoder) makeWordSplitter(
 			matches := encoder.regexWordSplitterTree.EvaluateRegexTree(
 				line, encoder.wordSplitterMap,
 			)
+
+			if encoder.shiftWhitespace {
+				// Move one space from any all-space match to the next match
+				for i := 0; i < len(matches)-1; i++ {
+					if strings.Trim(matches[i], " ") == "" && len(matches[i]) > 1 {
+						// Only spaces in this match
+						if matches[i][0] == ' ' {
+							// Remove one space from this match
+							matches[i] = matches[i][1:]
+							// Add one space to the start of the next match
+							matches[i+1] = " " + matches[i+1]
+						}
+					}
+				}
+			}
+
 			for _, word := range matches {
 				if encoder.lowerCase {
 					word = strings.ToLower(word)

@@ -900,15 +900,16 @@ type HFConfig struct {
 // SpecialConfig contains the special tokens and special token configuration
 // that gpt_bpe uses.
 type SpecialConfig struct {
-	PuncRunes     []*string          `json:"punc_runes"`
-	Normalizer    *map[string]string `json:"normalizer"`
-	EncloseEosBos bool               `json:"enclose_eos_bos"`
-	PrefixSpace   bool               `json:"prefix_space"`
-	LowerCase     bool               `json:"lower_case"`
-	EndOfWord     string             `json:"end_of_word"`
-	DecodeExtra   *map[string]string `json:"decode_extra"`
-	SplitRegex    *string            `json:"split_regex"`
-	SpaceMerge    bool               `json:"space_merge"`
+	PuncRunes       []*string          `json:"punc_runes"`
+	Normalizer      *map[string]string `json:"normalizer"`
+	EncloseEosBos   bool               `json:"enclose_eos_bos"`
+	PrefixSpace     bool               `json:"prefix_space"`
+	LowerCase       bool               `json:"lower_case"`
+	EndOfWord       string             `json:"end_of_word"`
+	DecodeExtra     *map[string]string `json:"decode_extra"`
+	SplitRegex      *string            `json:"split_regex"`
+	SpaceMerge      bool               `json:"space_merge"`
+	ShiftWhitespace bool               `json:"shift_whitespace"`
 }
 
 // NewHFConfig creates a new HFConfig object with default values.
